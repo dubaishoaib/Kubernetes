@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: new-nginx
+    type: canary
+  name: new-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: new-nginx
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: new-nginx
+        type: canary
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/
+            name: canvol
+        resources: {}      
+      volumes:
+        - name: canvol
+          configMap:
+            name: canary
+status: {}

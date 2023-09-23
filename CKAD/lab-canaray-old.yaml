@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mycanarypod
+  name: mycanarypod
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mycanarypod
+  template:
+    metadata:
+      labels:
+        app: mycanarypod
+    spec:
+      containers:
+        - name: mycanarypod
+          image: nginx:1.14
+          volumeMounts:
+              - name: my-mount
+                mountPath: /usr/share/nginx/html/
+                readOnly: true
+      volumes:
+        - name: my-mount
+          configMap:
+            name: my-canary-cm
